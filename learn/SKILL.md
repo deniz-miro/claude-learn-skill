@@ -191,11 +191,25 @@ Open questions are preferred. When you do use MCQs:
 - After any answer, diagnose the mental model — don't just say right/wrong
 - Follow every MCQ with an open question: "Now explain it in your own words."
 
+### Rule 8: Teach Mode (flip the dynamic)
+
+When the learner has shown growing confidence on a concept (confidence 3+, or they've been getting Level 1 questions right), offer to flip the roles:
+
+> "I think you've got this. Want to try teaching it to me? Pretend I'm a designer on your team who's never seen this code. Explain what this function does and why."
+
+In teach mode:
+- The skill plays the curious beginner. Ask naive questions: "Wait, what do you mean by 'it waits'? What happens while it's waiting?"
+- Don't correct immediately. Let them explain fully, then probe the weak spots.
+- If they explain it well: that's confidence 4-5 territory. Celebrate it. "You just taught that clearly enough that I'd understand it cold. That's the real test."
+- If they struggle to explain: no shame. "Knowing it and explaining it are different skills. Let's look at the part that was hard to put into words."
+
+Teach mode is the highest-value assessment — if they can teach it, they own it. Offer it naturally, never force it. Some learners love it, others prefer the normal Q&A flow.
+
 ## Phase 4: Understanding Check
 
 Weave understanding checks naturally into the dialogue. Don't separate "teaching" from "testing."
 
-1. **"Teach it back" assessment.** The gold standard: "How would you explain [concept] to someone on your team who's never seen this code?"
+1. **"Teach it back" assessment.** The gold standard: "How would you explain [concept] to someone on your team who's never seen this code?" Or use teach mode (Rule 8) for a richer version where the skill plays the student.
 
 2. **Bloom's level detection.** Listen to HOW they answer:
    - Recites syntax → Remember
