@@ -19,8 +19,11 @@ Present via AskUserQuestion:
 - B) Start fresh from my latest changes
 - C) Something else on my mind
 
-**Step 2 — Detect recent changes**
+**Step 2 — Assess the environment (detection cascade)**
 
+The skill must work in any context — not just active git repos with code diffs. Run this cascade and use the first level that returns useful material:
+
+**Level A: Git diff available (richest context)**
 ```bash
 git log --oneline -10 --format="%h %s" 2>/dev/null
 echo "---"
@@ -28,19 +31,66 @@ git diff --stat HEAD~3 2>/dev/null || git diff --stat HEAD~1 2>/dev/null || git 
 echo "---"
 git diff HEAD~1 --no-color -U3 2>/dev/null | head -300
 ```
+If code diffs exist → map patterns to concepts, identify 1-3 to teach. This is the ideal path.
 
-Map diff patterns to concepts using the concept extraction table in SKILL.md and `references/concept-map.md`. Identify 1-3 teachable concepts.
+**Level B: Git repo exists but no recent code diffs (e.g., only config/docs changed)**
+```bash
+# Check what file types exist in the repo
+find . -maxdepth 3 -type f -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" -o -name "*.py" -o -name "*.go" -o -name "*.rs" 2>/dev/null | head -20
+```
+If code files exist but diffs are non-code → explore the codebase directly. Switch to a walkthrough-style or "let's explore what's already here" session. "No new changes to learn from, but there's plenty in this codebase. Want to explore what's here?"
 
-**Step 3 — Quick risk scan**
+**Level C: No git repo, but code files exist in the working directory**
+```bash
+# Look for code files in the current directory tree
+find . -maxdepth 3 -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" -o -name "*.py" -o -name "*.go" -o -name "*.rs" -o -name "*.html" -o -name "*.css" -o -name "*.json" \) 2>/dev/null | head -20
+```
+If code files exist without git → teach from the files directly. "I see code here but no git history. Let's explore what's in this project."
 
-Grep changed files for patterns from `references/vibe-coder-risks.md` (top 5 highest-priority patterns only). If found, note them for weaving into the session naturally — don't lead with them.
+**Level D: No code files, but config/data/docs exist (e.g., markdown, JSON, YAML)**
+```bash
+ls -la 2>/dev/null
+find . -maxdepth 2 -type f 2>/dev/null | head -20
+```
+If there are structured files (JSON, YAML, markdown with frontmatter, config files) → teach the relevant concepts. A PM working with config files can learn about structured data, schemas, YAML syntax, environment config. A designer working with design tokens can learn about CSS variables, JSON structure, naming conventions.
 
-**Step 4 — Opening**
+**Level E: Empty directory or nothing recognizable**
+Fall back to a conversation-driven session. Don't give up — ask what they've been working on:
 
-> "You've been building. Let me see what you changed... [brief summary of changes]. I see [N concepts] worth exploring: [list]. Which one catches your eye?"
+> "I don't see code files or git history in this directory. That's fine — we can work with whatever you've got. What have you been building or working on recently? We can learn from that, or I can teach you a concept you're curious about."
 
-Or if risks were found:
+Present choices:
+- A) I've been building something in another directory — let me point you there
+- B) Teach me a concept I've been curious about
+- C) I just want to understand how something works — let me describe it
+- D) Walk me through the basics of getting started with development
 
+**The key principle: never dead-end.** Every level of the cascade leads to a productive session. The skill adapts to the learner's context, not the other way around.
+
+**Step 3 — Quick risk scan (only if code files exist)**
+
+If Level A or B found code files, grep changed/existing files for patterns from `references/vibe-coder-risks.md` (top 5 highest-priority patterns only). If found, note them for weaving into the session naturally — don't lead with them.
+
+Skip this step entirely for Levels D and E.
+
+**Step 4 — Opening (adapt to what was found)**
+
+**If Level A (diffs available):**
+> "You've been building. Let me see what you changed... [brief summary]. I see [N concepts] worth exploring: [list]. Which one catches your eye?"
+
+**If Level B (repo but no code diffs):**
+> "I see your recent changes were [docs/config/etc.], but there's a whole codebase here. Want to explore something in the existing code, or is there a concept on your mind?"
+
+**If Level C (code files, no git):**
+> "I see [description of project — framework, file count, structure]. Let's explore what's here. What part of this project are you most curious about?"
+
+**If Level D (config/data/docs only):**
+> "I see [description of files]. These aren't traditional code files, but there's plenty to learn from. [Relevant concept suggestion based on file types.]"
+
+**If Level E (conversation-driven):**
+> "Tell me what you've been working on, and we'll learn from there."
+
+If risks were found in any level:
 > "I also noticed something in `[file]` that's worth understanding when you're ready."
 
 ---
@@ -62,11 +112,17 @@ Or if risks were found:
 grep -rn "[topic-related pattern]" src/ 2>/dev/null | head -10
 ```
 
+If no code files exist or the topic doesn't appear in the codebase, teach it conceptually using analogies from the learner's background. You don't need code to teach "what is an API" or "how does async work." Use the concept-map analogies and hypothetical scenarios grounded in their professional world.
+
 **Step 4** — Opening
 
+If the topic was found in code:
 > "[Topic] appears in your codebase at [locations]. Let's start with the one at `[file:line]`."
 
-Then enter Phase 3 with a Level 1 open question about that specific code location.
+If no code but learner has context:
+> "I don't see [topic] in the current project, but it's an important concept. Let's explore it — I'll use examples from [their domain]. [Opening Socratic question]."
+
+Then enter Phase 3 with a Level 1 open question.
 
 ---
 

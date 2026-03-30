@@ -67,7 +67,7 @@ All modes share Phases 2-5. Only Phase 1 differs. See `references/session-patter
 
 Each mode has its own Phase 1. Brief summary here — full scripts in `references/session-patterns.md`.
 
-**Smart (no args):** Check `session_continuity.open_threads` first — offer to resume. Then run git diff (up to HEAD~3), extract 1-3 concepts, and do a quick risk scan of changed files using patterns from `references/vibe-coder-risks.md`.
+**Smart (no args):** Adapt to whatever context exists. Check `session_continuity.open_threads` first — offer to resume. Then assess the environment: Is this a git repo? Are there code files? Based on what's available, choose the best entry point — git diff analysis, codebase exploration, file-based concept detection, or a conversation-driven session. See `references/session-patterns.md` for the full detection cascade.
 
 **Topic:** Parse the topic from arguments. Check prerequisites in progress file. Find where the topic appears in the codebase via grep. If prerequisites are weak, address those first.
 
