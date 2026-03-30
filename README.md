@@ -1,27 +1,30 @@
-# /learn — Socratic Coding Tutor for Vibe Coders
+# /learn — Socratic Tutor for Vibe Coders
 
-A Claude Code skill that teaches programming through Socratic dialogue. Built for vibe coders — people who build real apps with AI but want to understand what they built, not treat it as a black box.
+A Claude Code skill that teaches through Socratic dialogue, not lectures. Built for anyone who works with AI and wants to understand what they built — whether that's code, configurations, workflows, or structured data.
 
 ## The Problem
 
-Everyone is vibe coding. AI writes the code, you ship the app. But when something breaks, you're stuck. You don't know what an API route does, why `await` matters, or what happens when your fetch call fails. This skill fixes that — it teaches you the foundations by asking questions about your own code, not by lecturing.
+Everyone is vibe coding. AI writes the code, you ship the app. But when something breaks, you're stuck. You don't know what an API route does, why `await` matters, or what happens when your fetch call fails.
+
+And it's not just code. PMs use AI to generate configs they don't understand. Designers prototype with frameworks they can't debug. Researchers build automation pipelines that are black boxes. The pattern is the same: AI does the work, you lose control.
+
+This skill fixes that. It teaches you the foundations by asking questions about your own work — not by lecturing.
 
 ## What it does
 
 - **Socratic method**: Never explains first. Asks what you think, builds on your answer, follows your curiosity
 - **5-level hint ladder**: Starts with open questions, only gives answers as a last resort — and always ends with a follow-up question
-- **Context-aware**: Reads git diffs, scans your codebase, traces user actions through your code
+- **Context cascade**: Adapts to whatever you're working with — git diffs, codebases, config files, markdown docs, or just a conversation. Never dead-ends.
 - **Adapts to you**: Learns your background (design, PM, data, research) and tailors analogies to your world
-- **Tracks progress**: Spaced repetition, Bloom's Taxonomy levels, misconception tracking, session continuity
-- **8 session modes**: From quick diff-based lessons to full codebase walkthroughs and security audits
+- **Frustration-aware**: Detects when you're stuck and changes approach instead of pushing harder
+- **Teach mode**: When you're confident, flip the roles — you teach, the skill plays dumb and asks naive questions
+- **Progress tracking**: Spaced repetition, session continuity, shareable learning artifacts
+- **Delight**: Celebrates real growth moments, remembers your journey across sessions
 
 ## Install
 
 ```bash
-# Clone this repo
 git clone https://github.com/deniz-miro/claude-learn-skill.git
-
-# Copy the skill into your Claude Code skills
 cp -r claude-learn-skill/learn ~/.claude/skills/learn
 ```
 
@@ -29,11 +32,18 @@ That's it. The skill is now available as `/learn` in any Claude Code session.
 
 ## Usage
 
-**One command: `/learn`.** It figures out what to teach based on your context.
+**One command: `/learn`.** It figures out what to do based on your context.
 
-Just committed code? It teaches from the diff. Hit a bug? It teaches the concept behind it. Haven't used it in a while? It recaps your progress. No code at all? It starts a conversation. You don't need to think about modes.
+The skill runs a detection cascade to find the best entry point for learning:
 
-You can also say `/learn <topic>` to learn something specific (e.g., `/learn async/await`).
+1. **Recent code changes?** Teaches from your git diff — the concepts you just used
+2. **Codebase but no changes?** Explores what's already there — walkthrough, audit, or concept deep-dive
+3. **Config, YAML, JSON, markdown files?** Teaches structured data concepts, schemas, configuration patterns
+4. **No files at all?** Starts a conversation — "What have you been working on?" and teaches from there
+
+You don't need to think about modes. Just type `/learn` after a building session, when you're stuck, or when you're curious about something.
+
+You can also say `/learn <topic>` to learn something specific (e.g., `/learn async/await`, `/learn git branching`, `/learn API design`).
 
 <details>
 <summary>Advanced: override modes for power users</summary>
@@ -52,15 +62,34 @@ You can also say `/learn <topic>` to learn something specific (e.g., `/learn asy
 ## How it works
 
 ### First session
-Asks 3 questions: your background, your coding experience, and whether AI helped write your code. Stores your profile in `docs/learning-progress.json`. From then on, everything is personalized.
+Asks one question about your background, then immediately teaches you something from your project. Remaining profile questions are woven into the conversation naturally. No registration forms — you get value in the first 30 seconds.
+
+Also asks: "What's the one thing you most wish you understood?" — your answer seeds the first real topic.
 
 ### Teaching approach
 Every exchange follows the **Think-Articulate-Reflect** loop:
-1. Asks what you think (grounded in your actual code, not abstract examples)
+1. Asks what you think (grounded in your actual work, not abstract examples)
 2. Builds on your answer — right, wrong, or "I have no idea"
 3. Asks you to reflect on how your understanding changed
 
-Questions never leak the answer. Multiple-choice options are learning directions ("go deeper," "connect to what I know," "try applying it"), not quiz answers.
+Questions never leak the answer. Choices are learning directions ("deeper," "connect," "try it," "next"), not quiz answers.
+
+### When you're stuck
+The skill detects frustration — repeated "I don't know," short answers, or you saying you're confused. Instead of pushing harder, it:
+- Validates the struggle: "This trips up experienced engineers too"
+- Changes approach entirely: new angle, make it concrete, zoom out, or park it for later
+- Never makes you feel dumb for finding something hard
+
+### When you're confident
+At higher confidence levels, the skill offers **teach mode**: you explain the concept, the skill plays a curious beginner and asks naive questions. If you can teach it, you own it.
+
+### Session endings
+Every session ends with three things:
+1. **What you now know** — stated as a capability, not a grade
+2. **One thing to try** — a concrete action for your next session
+3. **Share it** (optional) — save to a learning log or draft a Slack TIL post
+
+No scores. No taxonomy labels. You should feel accomplished, not measured.
 
 ### The hint ladder
 ```
@@ -72,35 +101,30 @@ Level 5: Full explanation  → "[4 sentences max]. [Follow-up question]."
 ```
 Never skips levels. Even at Level 5, ends with a question.
 
-### Progress tracking
-- **Confidence scale** (1-5): Assessed through dialogue, not self-reporting
-- **Bloom's Taxonomy**: Tracks whether you can remember, understand, apply, analyze, evaluate, or create
-- **Spaced repetition** (SM-2): Automatically schedules review of concepts that might fade
-- **Session continuity**: Saves open threads so you can pick up where you left off
-- **Misconception tracking**: Notes specific wrong mental models and revisits them
-
 ## Who it's for
 
-Anyone who builds with AI and wants to understand what they built:
-- **Designers** picking up code through prototyping
-- **PMs** building internal tools with AI assistance
-- **Researchers** automating their workflows
-- **Founders** shipping MVPs with Claude/Cursor/Copilot
-- **Career switchers** learning development by doing
+Anyone who works with AI and wants to understand what they're building:
 
-The skill adapts analogies to your background. A designer gets visual/spatial metaphors. A PM gets process/workflow analogies. A data analyst gets spreadsheet/query comparisons.
+- **Designers** prototyping with code frameworks they're still learning
+- **PMs** building internal tools or automations with AI assistance
+- **Researchers** creating data pipelines, analysis scripts, or automation workflows
+- **Founders** shipping MVPs with Claude, Cursor, or Copilot
+- **Career switchers** learning development by doing
+- **Anyone** who uses AI to generate things they don't fully understand yet
+
+The skill adapts to your background. A designer gets visual/spatial metaphors. A PM gets process/workflow analogies. A data analyst gets spreadsheet/query comparisons. A researcher gets study-design analogies.
 
 ## Concept coverage
 
-~50 concepts across 5 tiers:
+~70 concepts across multiple domains:
 
-| Tier | Topics | Key concepts |
-|---|---|---|
-| 1. Foundations | HTML, components, routing | Props, imports/exports, file-based routing, server vs client |
-| 2. Interactivity | State, effects, styling | useState, useEffect, Tailwind, CSS tokens, build process |
-| 3. Data Flow | HTTP, APIs, async | Fetch, error handling, webhooks, polling, CORS, serialization |
-| 4. Architecture | Patterns, types, data | State machines, generics, validation, databases, middleware |
-| 5. Security & Production | Risk awareness | Input validation, XSS, auth, secret management, error boundaries |
+**JavaScript / TypeScript / React** — Components, state, effects, routing, async/await, API routes, TypeScript types, testing, styling, modules
+
+**Python** — Functions, classes, decorators, context managers, comprehensions, type hints, virtual environments, pandas, package management
+
+**General programming** — Conditionals, loops, variables, functions, file I/O, git, Docker, CI/CD, SQL, configuration files
+
+**Security & Production** — Input validation, XSS, auth, secret management, error boundaries, rate limiting
 
 Each concept tracks:
 - Code prerequisites (what you need to have seen)
@@ -114,17 +138,19 @@ Each concept tracks:
 learn/
 ├── SKILL.md                          Core skill: workflow, dialogue rules, progress schema
 └── references/
-    ├── concept-map.md                50 concepts with multi-background analogies + dependency graph
+    ├── concept-map.md                70 concepts with multi-background analogies + dependency graph
     ├── socratic-framework.md         Hint ladder, question types, MCQ design, Bloom's detection
     ├── session-patterns.md           Per-mode dialogue templates and scripts
     └── vibe-coder-risks.md           Risky patterns catalog with grep signatures + Socratic openers
 ```
 
+Reference files are lazy-loaded — only read when the current session actually needs them, keeping the context window focused on your work.
+
 ## Philosophy
 
 > "The AI never spontaneously suggests sophisticated concepts. You need domain knowledge to guide it."
 
-Understanding is the bottleneck skill for vibe coders. Not generating code — understanding it. This skill exists so that every building session can also be a learning session.
+Understanding is the bottleneck skill for anyone working with AI. Not generating — understanding. This skill exists so that every working session can also be a learning session.
 
 ## License
 
