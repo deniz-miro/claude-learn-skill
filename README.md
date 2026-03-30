@@ -29,16 +29,25 @@ That's it. The skill is now available as `/learn` in any Claude Code session.
 
 ## Usage
 
-| Command | What it does |
+**One command: `/learn`.** It figures out what to teach based on your context.
+
+Just committed code? It teaches from the diff. Hit a bug? It teaches the concept behind it. Haven't used it in a while? It recaps your progress. No code at all? It starts a conversation. You don't need to think about modes.
+
+You can also say `/learn <topic>` to learn something specific (e.g., `/learn async/await`).
+
+<details>
+<summary>Advanced: override modes for power users</summary>
+
+| Command | What it forces |
 |---|---|
-| `/learn` | Smart mode: detect recent changes + resume open threads + risk scan |
-| `/learn <topic>` | Teach a specific concept (e.g., `/learn async/await`) |
 | `/learn walkthrough` | Trace a user action through your codebase layer by layer |
 | `/learn audit` | Scan your code for risky patterns vibe coders often miss |
 | `/learn recap` | "State of your knowledge" report across all sessions |
 | `/learn why` | Learn the concept behind a bug, then fix it yourself |
 | `/learn review` | Spaced repetition review of concepts due for practice |
 | `/learn next` | Suggest the highest-value next concept with "this unlocks..." |
+
+</details>
 
 ## How it works
 

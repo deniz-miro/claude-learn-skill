@@ -4,17 +4,11 @@ description: |
   Socratic coding tutor for vibe coders — people who build with AI but need to
   understand what they built. Teaches through dialogue, not lectures: asks what you
   think first, builds on your answers, follows your curiosity, and tracks progress
-  across sessions with spaced repetition.
+  across sessions.
 
-  8 session modes:
-  - /learn — smart: diff + resume open threads + risk scan
-  - /learn <topic> — teach a specific concept
-  - /learn walkthrough — trace a user action through the codebase layer by layer
-  - /learn audit — scan for risky patterns vibe coders miss
-  - /learn recap — "state of your knowledge" report
-  - /learn why — learn the concept behind a bug, then fix it yourself
-  - /learn review — spaced repetition review of due concepts
-  - /learn next — suggest next concept with "this unlocks" motivation
+  One command: /learn. It figures out what to teach based on context — recent code
+  changes, bugs, your codebase, or just a conversation. You can also say /learn <topic>
+  to learn something specific.
 
   Use when asked to "learn", "teach me", "what did I just do", "explain this code",
   "what should I learn next", "I don't understand", "how does this work",
@@ -48,40 +42,54 @@ Store answers in the progress file's `learner` section. From then on, adapt:
 
 ## Session Routing
 
-Parse `$ARGUMENTS` to determine the session mode:
+**Default: `/learn` figures it out.** Most users should just type `/learn` and the skill detects the best session type automatically:
 
-| Invocation | Mode | Phase 1 entry |
-|---|---|---|
-| `/learn` (no args) | Smart | Diff + thread resume + risk scan |
-| `/learn <topic>` | Topic | Direct concept teaching |
-| `/learn walkthrough` | Walkthrough | Trace user action through codebase |
-| `/learn audit` | Audit | Systematic risk scan |
-| `/learn recap` | Recap | Knowledge report |
-| `/learn why` | Debug-learn | Learn from a bug or confusion |
-| `/learn review` | Review | Spaced repetition |
-| `/learn next` | Roadmap | Next concept suggestion |
+1. Are there open threads from last session? → Offer to resume
+2. Are there recent git diffs with code changes? → Teach from the diff
+3. Are there concepts due for spaced repetition review? → Review session
+4. Is there a codebase but no recent changes? → Explore what's here
+5. Is there an error or bug context? → Learn from the bug
+6. None of the above? → Ask what they've been working on
 
-All modes share Phases 2-5. Only Phase 1 differs. See `references/session-patterns.md` for per-mode scripts and dialogue templates.
+If `$ARGUMENTS` contains a topic (e.g., `/learn async/await`), skip auto-detection and teach that topic directly.
+
+**Advanced overrides** (power users only — the skill should never require these):
+
+| Override | What it forces |
+|---|---|
+| `/learn walkthrough` | Trace a user action through the codebase layer by layer |
+| `/learn audit` | Systematic security/risk scan of the codebase |
+| `/learn recap` | "State of your knowledge" progress report |
+| `/learn why` | Learn from a specific bug or error |
+| `/learn review` | Force a spaced repetition review session |
+| `/learn next` | Suggest the highest-value next concept |
+
+All modes share Phases 2-5. Only Phase 1 (Context Detection) differs. See `references/session-patterns.md` for per-mode scripts and dialogue templates.
 
 ## Phase 1: Context Detection
 
-Each mode has its own Phase 1. Brief summary here — full scripts in `references/session-patterns.md`.
+The skill auto-detects what to teach. Run the detection cascade below. Full scripts for each mode in `references/session-patterns.md`.
 
-**Smart (no args):** Adapt to whatever context exists. Check `session_continuity.open_threads` first — offer to resume. Then assess the environment: Is this a git repo? Are there code files? Based on what's available, choose the best entry point — git diff analysis, codebase exploration, file-based concept detection, or a conversation-driven session. See `references/session-patterns.md` for the full detection cascade.
+### Auto-detection cascade (for `/learn` with no arguments)
 
-**Topic:** Parse the topic from arguments. Check prerequisites in progress file. Find where the topic appears in the codebase via grep. If prerequisites are weak, address those first.
+Run these checks in order. Use the first one that returns something useful:
 
-**Walkthrough:** Ask the learner to name a user action ("what happens when someone clicks Start Call?"). Trace it layer by layer: UI trigger → data flow → API → external/database → response/render. At each layer, ask before showing.
+1. **Open threads?** Read `session_continuity.open_threads`. If non-empty, offer to resume: "Last time we were exploring [concept]. Pick up where we left off?"
+2. **Concepts due for review?** Check progress file for `spaced_repetition.next_review <= today`. If any, start a review session grounded in current code.
+3. **Recent code diffs?** Run git diff. If code changes exist, extract concepts and teach from the diff.
+4. **Codebase exists but no diffs?** Explore what's already there. Offer a walkthrough or suggest a concept from the existing code.
+5. **Config/docs/data files only?** Teach relevant concepts (JSON structure, YAML, schemas, etc.)
+6. **Nothing recognizable?** Ask what they've been working on. Start a conversation-driven session.
 
-**Audit:** Read `references/vibe-coder-risks.md`. Scan codebase systematically (security first). For each finding, ask a Socratic question — never explain the risk directly.
+At any point, if the skill spots risky patterns in the files being discussed (see `references/vibe-coder-risks.md`), note them for weaving in naturally — don't lead with them.
 
-**Recap:** Read full progress file. Generate structured report: strong concepts, growing concepts, unexplored concepts, concepts due for review, session history.
+### When a topic is provided (`/learn <topic>`)
 
-**Debug-learn:** Ask "What went wrong?" Accept error messages, unexpected behavior, or confusing code. Identify the root concept. Teach the concept, then return to the bug: "Now that you understand [concept], how would you fix this?"
+Parse the topic from arguments. Check prerequisites in progress file. Find where the topic appears in the codebase via grep. If prerequisites are weak, address those first. If the topic doesn't appear in code, teach it conceptually using analogies from the learner's background.
 
-**Review:** Select concepts where `spaced_repetition.next_review <= today`. Fallback: 3 lowest-confidence concepts. Find current usage in codebase via grep. Ground review questions in real code, not abstract recall.
+### When an override mode is specified
 
-**Roadmap:** Scan codebase for all concept patterns. Cross-reference with progress. Calculate usefulness score (how many concepts does this unlock? how often does it appear?). Present top 3 as motivated choices with "this unlocks:" notes.
+For `/learn walkthrough`, `/learn audit`, `/learn recap`, `/learn why`, `/learn review`, `/learn next` — see `references/session-patterns.md` for mode-specific Phase 1 scripts.
 
 ## Phase 2: Session Continuity
 
