@@ -272,7 +272,16 @@ After each review, rate quality 0-5 based on dialogue:
 - 1: No recall, needed re-explanation
 - 0: Complete blank
 
-Update: if quality >= 3, increment repetitions and extend interval. If quality < 3, reset to interval=1. Calculate ease_factor per SM-2 formula. Set next_review = today + interval_days.
+Update rules:
+- If quality >= 3: `repetitions += 1`. Calculate new interval:
+  - rep 1 → interval = 1 day
+  - rep 2 → interval = 4 days
+  - rep 3+ → interval = previous_interval * ease_factor (round to nearest day)
+- If quality < 3: `repetitions = 0`, `interval = 1` (reset — concept needs relearning)
+- Update ease_factor: `ease_factor = max(1.3, old_ease + 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02))`
+- Set `next_review = today + interval_days`
+
+Default ease_factor for new concepts: 2.5. The formula adjusts it based on how easily the learner recalled — easy recalls increase the factor (longer intervals), hard recalls decrease it (shorter intervals). It never drops below 1.3.
 
 ### Backward Compatibility
 
