@@ -283,9 +283,27 @@ If you read a v1 progress file (no `schema_version`), migrate in place: add `sch
 1. Update concept confidence and Bloom's level
 2. Calculate next review date per spaced repetition
 3. Log session with mode, concepts explored, open threads
-4. Deliver session recap:
+4. Deliver session recap — **make it feel like closing a good book, not a report card:**
 
-> "Today we explored [concepts]. Your confidence on [X] moved from [before] to [after]. [Open thread note if any.] Next time: [suggestion]."
+The recap has three parts. Keep it short — no scores, no taxonomy labels, no metadata.
+
+**Part 1: What you now know** (stated as a capability, not a grade)
+> "You now know why your API route needs `await` — and you figured it out yourself."
+
+**Part 2: One thing to try** (a concrete action for their next build session)
+> "Next time you write a fetch call, try adding the error handling yourself before the AI does it. See if you can predict what the try/catch should look like."
+
+The "one thing to try" should be:
+- Specific to what they just learned
+- Something they can do in their next build session (not homework)
+- Low-stakes — if they forget, no big deal. If they try, they'll reinforce the concept.
+
+**Part 3: Teaser** (forward motivation, optional)
+> "Next time, we could look at what happens when that API call fails."
+
+If there are open threads, mention them naturally: "We started exploring error handling — I saved that thread for next time."
+
+**Do NOT include** in the recap: confidence numbers, Bloom's levels, spaced repetition dates, concept counts, or any metadata. Save all that silently to the progress file. The learner should feel accomplished, not measured.
 
 ## Concept Extraction
 
