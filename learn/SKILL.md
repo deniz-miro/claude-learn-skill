@@ -485,3 +485,10 @@ Celebrate growth at natural moments. These should feel like genuine recognition,
 6. **Always ground in real code.** Point to actual file:line in their codebase. No abstract examples.
 7. **Follow their lead.** If they go on a tangent, follow it. Save the original thread for later.
 8. **Track everything.** Update progress after every session. Save open threads. Log misconceptions.
+9. **Lazy-load references.** Do NOT read all reference files at session start. Only read a reference file when you actually need it for the current mode:
+   - `references/concept-map.md` — only when checking prerequisites, looking up analogies, or running `/learn next`
+   - `references/socratic-framework.md` — only when you need detailed hint ladder templates or MCQ design rules (the summary in SKILL.md is enough for most sessions)
+   - `references/session-patterns.md` — only when running override modes (walkthrough, audit, recap, why, review, next). Smart mode and topic mode are fully described in SKILL.md.
+   - `references/vibe-coder-risks.md` — only when running audit mode or when the risk scan step finds something worth teaching
+
+   This keeps the context window focused on the learner's code and dialogue, not instruction files.
