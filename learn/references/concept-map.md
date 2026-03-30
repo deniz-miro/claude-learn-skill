@@ -88,7 +88,50 @@ Maps code patterns to teachable concepts. Each concept includes multi-background
 - "Multiple things can be 'in flight' at the same time" (requires: async/await)
 - "Data needs to survive page refreshes and server restarts" (requires: client/server)
 
-## Tier 5: Security & Production
+## Python Concepts
+
+For vibe coders building with Python (Flask, FastAPI, Django, scripts, data tools).
+
+| Pattern | Concept | Analogies by Background |
+|---|---|---|
+| `def`, `class`, `self` | Functions & classes | **Design:** Components with methods. **PM:** A team (class) with responsibilities (methods). **General:** A recipe (function) vs a cookbook (class). |
+| `@decorator` | Decorators | **Design:** A filter applied to a layer. **PM:** A checklist step that runs before every task. **General:** Gift wrapping — same present, extra behavior on the outside. |
+| `with open()` | Context managers | **Design:** Open file, edit, auto-save-and-close. **PM:** Book a meeting room, use it, auto-release. **General:** Borrow a tool, use it, return it — guaranteed. |
+| `[x for x in ...]` | Comprehensions | **Data:** A formula applied to every row. **PM:** "For each item in the list, do this." **General:** Assembly line — transform each piece the same way. |
+| `pip install`, `requirements.txt` | Package management | **General:** A shopping list for your project — everything it needs to run. |
+| `venv`, `conda` | Virtual environments | **PM:** Separate workspaces per project. **General:** Each project gets its own toolbox so they don't mix. |
+| Flask/FastAPI decorators | API routing | **PM:** A receptionist who routes requests to the right department. **General:** A phone menu — press 1 for sales, press 2 for support. |
+| `dict`, `list`, `tuple` | Data structures | **Data:** Dict = row with named columns. List = a column of values. Tuple = a frozen row. **General:** Dict = labeled drawer, list = stack of papers, tuple = sealed envelope. |
+| Type hints: `-> str` | Type annotations | **PM:** A form that specifies "name: text, age: number." **Data:** Column types in a schema. **General:** Labels that say what goes where. |
+| `pandas`, `DataFrame` | Data manipulation | **Data:** A spreadsheet you can program. **PM:** Automated report generation. **General:** Tables you can filter, sort, and transform with code. |
+
+**Mental model prerequisites for Python:**
+- "Indentation matters — it's how Python knows what's inside what"
+- "Everything is an object — even functions can be passed around"
+- "Python reads top to bottom, but functions only run when called"
+
+## General Programming Concepts
+
+Language-agnostic concepts that appear in any codebase.
+
+| Pattern | Concept | Analogies by Background |
+|---|---|---|
+| `if/else` branches | Conditional logic | **PM:** Decision tree in a workflow. **Design:** Show/hide rules in a prototype. **General:** "If it's raining, take an umbrella." |
+| `for/while` loops | Iteration | **Data:** Apply formula to every row. **PM:** Process each ticket in the backlog. **General:** Repeat until done. |
+| Function definitions | Functions | **PM:** A reusable process template. **Design:** A component you can drop in anywhere. **General:** A recipe — same inputs, same outputs. |
+| Variable assignment | Variables & scope | **General:** A labeled box that holds a value. Scope = which rooms can see the box. |
+| `.json`, `.yaml`, `.toml` | Configuration files | **PM:** Settings page for your app. **Data:** A schema definition. **General:** A form your app fills out to know how to behave. |
+| `git commit`, `git push` | Version control | **Design:** Version history in Figma. **PM:** Saving a checkpoint you can return to. **General:** Save game — you can always reload. |
+| `Dockerfile` | Containers | **PM:** A portable office — everything your app needs in one box. **General:** A shipping container — same contents work anywhere. |
+| `.github/workflows` | CI/CD | **PM:** An automated checklist that runs every time you submit work. **General:** A robot that tests and deploys your code automatically. |
+| SQL queries | Database fundamentals | **Data:** Spreadsheet queries. **PM:** Asking a structured question to a data warehouse. **General:** "Show me all users who signed up last week." |
+
+**Mental model prerequisites for general programming:**
+- "Code runs in order, top to bottom, unless told otherwise"
+- "Functions are reusable instructions — define once, use many times"
+- "Variables are labels for values — the label stays, the value can change"
+
+
 
 These are especially important for vibe coders who accept AI-generated code without understanding the risks. See `references/vibe-coder-risks.md` for the full risk catalog with grep patterns.
 

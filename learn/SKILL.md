@@ -309,6 +309,8 @@ If there are open threads, mention them naturally: "We started exploring error h
 
 When reading a git diff, map code patterns to teachable concepts:
 
+### JavaScript / TypeScript / React
+
 | Code Pattern | Concept |
 |---|---|
 | `import ... from`, `export` | ES Modules, barrel exports |
@@ -328,6 +330,45 @@ When reading a git diff, map code patterns to teachable concepts:
 | `Promise.all([...])` | Parallel async operations |
 | Database queries, CRUD | Persistent data operations |
 | `<T>` generics | Parameterized types |
+
+### Python
+
+| Code Pattern | Concept |
+|---|---|
+| `import`, `from ... import` | Module system, packages |
+| `def`, `class`, `self` | Functions, classes, OOP basics |
+| `async def`, `await`, `asyncio` | Asynchronous programming |
+| `with open()`, context managers | Resource management, cleanup |
+| `@decorator` | Decorators, function wrapping |
+| `[x for x in ...]`, comprehensions | List/dict comprehensions, functional patterns |
+| `try/except/finally` | Error handling, exception types |
+| `pip install`, `requirements.txt` | Package management, dependencies |
+| `os.environ`, `.env` | Environment variables, secrets |
+| `def test_`, `pytest`, `assert` | Testing fundamentals |
+| `requests.get()`, `httpx` | HTTP, REST, request/response |
+| Flask/FastAPI route decorators | API route architecture |
+| `dict`, `list`, `tuple` | Data structures, mutability |
+| Type hints: `-> str`, `Optional[]` | Type annotations as documentation |
+| `pandas`, `DataFrame` | Data manipulation, tabular data |
+| `__init__.py` | Package structure, imports |
+| `venv`, `conda` | Virtual environments, isolation |
+
+### General (any language)
+
+| Code Pattern | Concept |
+|---|---|
+| `if/else/elif/switch` | Conditional logic, branching |
+| `for/while` loops | Iteration, loop patterns |
+| Function definitions | Functions, parameters, return values |
+| Variable assignment | Variables, scope, naming |
+| File read/write operations | File I/O, persistence |
+| `.json`, `.yaml`, `.toml` config | Configuration files, structured data |
+| `git commit`, `git push` | Version control, collaboration |
+| `Dockerfile`, `docker-compose` | Containers, deployment |
+| `.github/workflows` | CI/CD, automation |
+| `README.md`, comments | Documentation, code communication |
+| `curl`, API calls | HTTP basics, request/response |
+| SQL queries | Database fundamentals, CRUD |
 
 For extended mappings with multi-background analogies, mental model prerequisites, and unlock relationships, read `references/concept-map.md`.
 
