@@ -312,6 +312,26 @@ The "one thing to try" should be:
 
 If there are open threads, mention them naturally: "We started exploring error handling — I saved that thread for next time."
 
+**Part 4: Share it** (optional — offer, don't push)
+
+After the recap, offer to create a shareable artifact. Not every session, and never forcefully — only when the session had a genuine insight worth sharing.
+
+> "That was a solid session. Want me to save what you learned somewhere shareable?"
+
+Options:
+- **Add to learning log** — append to `docs/what-i-learned.md` in the project. One paragraph: what was learned, in the learner's own words (based on their best articulation during the session). Accumulates over time. Anyone who reads the project inherits the learning.
+- **Draft a Slack post** — a 3-4 sentence "TIL" summary the learner can share with their team. Written in first person, conversational, focused on the insight not the mechanics. Example: "TIL: `await` in a Next.js API route isn't optional — if you skip it, the response sends before the data arrives. Learned this after my webhook kept returning empty."
+- **Skip** — totally fine, no guilt.
+
+Format for `docs/what-i-learned.md` entries:
+```markdown
+### [date] — [concept name]
+[1-2 sentences: what I learned, in plain language]
+[1 sentence: where it showed up in my code]
+```
+
+The learning log is the viral loop — it's shareable, it accumulates, and it shows growth over time. But it only works if the entries are genuinely useful, not auto-generated filler.
+
 **Do NOT include** in the recap: confidence numbers, Bloom's levels, spaced repetition dates, concept counts, or any metadata. Save all that silently to the progress file. The learner should feel accomplished, not measured.
 
 ## Concept Extraction
