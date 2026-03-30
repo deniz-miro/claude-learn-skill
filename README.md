@@ -19,7 +19,7 @@ Everyone is vibe coding. AI writes the code, you ship the app. But when somethin
 
 ```bash
 # Clone this repo
-git clone https://github.com/denizkartepe/claude-learn-skill.git
+git clone https://github.com/deniz-miro/claude-learn-skill.git
 
 # Copy the skill into your Claude Code skills
 cp -r claude-learn-skill/learn ~/.claude/skills/learn
