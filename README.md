@@ -45,12 +45,14 @@ If you also use gstack, it ships its own `/learn` skill (a project-learnings man
 - **Keep this one as `/learn`:** uninstall or rename gstack's `/learn`.
 - **Rename this one:** `mv ~/.claude/skills/learn ~/.claude/skills/socratic_tutor`. Same skill, different invocation handle (`/socratic_tutor`).
 
-If you've already hit the collision and the skills are tangled, the recovery snippet that re-installs this skill cleanly:
+If you've already hit the collision and the skills are tangled, do a clean reinstall under the alternate handle. Mirrors the Install snippet above, just renamed:
 
 ```bash
-curl -sL "https://raw.githubusercontent.com/deniz-miro/claude-learn-skill/main/learn/SKILL.md" \
-  -o ~/.claude/skills/socratic_tutor/SKILL.md
+git clone https://github.com/deniz-miro/claude-learn-skill.git
+cp -r claude-learn-skill/learn ~/.claude/skills/socratic_tutor
 ```
+
+This installs the full skill (`SKILL.md` + all `references/*`), not just one file — so the skill actually works after the rename.
 
 ## Usage
 
