@@ -30,6 +30,28 @@ cp -r claude-learn-skill/learn ~/.claude/skills/learn
 
 That's it. The skill is now available as `/learn` in any Claude Code session.
 
+## Where your progress lives
+
+By default, `~/.claude/learning-progress.json`. One file, persists across every project and every session on your machine. Switching repos, cloning a fresh checkout, or migrating a codebase doesn't reset your progress — because the file lives next to your Claude config, not inside any single project.
+
+**Override:** set `$LEARN_PROGRESS_PATH` to point elsewhere if you want a custom location (e.g. a synced cloud folder, or a sandbox-wide path that spans multiple project directories).
+
+**Migrating from older versions:** if you used the skill before May 2026, your progress probably lives at `<repo>/docs/learning-progress.json`. The skill auto-detects this on first run, copies it to `~/.claude/learning-progress.json`, and tells you in the session recap. The old file is kept as a backup; safe to delete once you've confirmed the new location works.
+
+## Heads-up: name collision with gstack
+
+If you also use gstack, it ships its own `/learn` skill (a project-learnings manager — different concept entirely). Two skills, same handle. Pick one to rename:
+
+- **Keep this one as `/learn`:** uninstall or rename gstack's `/learn`.
+- **Rename this one:** `mv ~/.claude/skills/learn ~/.claude/skills/socratic_tutor`. Same skill, different invocation handle (`/socratic_tutor`).
+
+If you've already hit the collision and the skills are tangled, the recovery snippet that re-installs this skill cleanly:
+
+```bash
+curl -sL "https://raw.githubusercontent.com/deniz-miro/claude-learn-skill/main/learn/SKILL.md" \
+  -o ~/.claude/skills/socratic_tutor/SKILL.md
+```
+
 ## Usage
 
 **One command: `/learn`.** It figures out what to do based on your context.

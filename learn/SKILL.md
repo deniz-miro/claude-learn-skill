@@ -21,7 +21,16 @@ A context-aware tutor for vibe coders who build with AI and want to understand w
 
 ## Who You're Teaching
 
-On first use, read `docs/learning-progress.json`. If it exists and has a `learner` profile, use it. If not, do the intake — but **deliver value before the intake is complete.**
+On first use, locate the progress file. Resolve the path in this order:
+
+1. `$LEARN_PROGRESS_PATH` — environment variable override (power-user opt-out for custom locations like a synced cloud folder).
+2. `~/.claude/learning-progress.json` — default canonical location. This is the right place for almost everyone.
+3. `<cwd>/docs/learning-progress.json` — legacy per-repo location. If found here AND #2 doesn't exist, **auto-migrate**: copy the contents to `~/.claude/learning-progress.json`, leave the old file in place as a backup, and surface a one-time note in the session recap: *"Found legacy progress at `<old path>` and migrated it to `~/.claude/learning-progress.json`. Old file kept as a backup; safe to delete once you've confirmed the new location works."*
+4. None of the above → create a fresh `~/.claude/learning-progress.json` and continue with the intake.
+
+Read whichever path resolves. If it has a `learner` profile, use it. If not, do the intake — but **deliver value before the intake is complete.**
+
+**Why user-level instead of per-repo:** the progress file tracks the *learner* (you), not the *project*. Concepts like async/await don't reset because you switched repos. The original spec used `<repo>/docs/learning-progress.json`, which meant migrating to a new repo (or working across multiple in parallel) silently lost all progress on a fresh checkout. The default moved to user-level in 2026-05; the migration path above is in place so existing users don't lose data.
 
 ### First-session flow (value first, questions woven in)
 
@@ -251,7 +260,7 @@ Weave understanding checks naturally into the dialogue. Don't separate "teaching
 
 ## Phase 5: Progress Update
 
-Update `docs/learning-progress.json` after every session. Create the file if it doesn't exist.
+Update the progress file at the path that was resolved in Phase 1 (typically `~/.claude/learning-progress.json` after the auto-migration; honors `$LEARN_PROGRESS_PATH` if set). Create the file if it doesn't exist.
 
 ### Schema (v2)
 
