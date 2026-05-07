@@ -112,7 +112,7 @@ Every session ends with these things:
 1. **What you now know** — stated as a capability, not a grade
 2. **One thing to try** — a concrete action for your next session
 3. **Auto-saved to your journal** — `learning-journal.md` (next to `learning-progress.json`) gets a new entry under the current era, written in your voice. Skim it any time to see your arc.
-4. **Share it** (optional) — draft a Slack TIL post you can send to your team
+4. **Share it** (optional) — save a per-project entry to `docs/what-i-learned.md` (a sparse, opt-in artifact you can commit to your repo and share with teammates), or draft a Slack TIL post. The auto-journal in step 3 is comprehensive + private; this step is sparse + shareable.
 
 No scores. No taxonomy labels. You should feel accomplished, not measured.
 
