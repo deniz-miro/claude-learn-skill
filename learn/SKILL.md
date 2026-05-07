@@ -32,6 +32,8 @@ Read whichever path resolves. If it has a `learner` profile, use it. If not, do 
 
 **Why user-level instead of per-repo:** the progress file tracks the *learner* (you), not the *project*. Concepts like async/await don't reset because you switched repos. The original spec used `<repo>/docs/learning-progress.json`, which meant migrating to a new repo (or working across multiple in parallel) silently lost all progress on a fresh checkout. The default moved to user-level in 2026-05; the migration path above is in place so existing users don't lose data.
 
+**Companion journal file.** A human-readable companion file `learning-journal.md` lives in the same directory as the progress file — so `~/.claude/learning-journal.md` with the default path, or in the directory containing `$LEARN_PROGRESS_PATH` if the env var is set. It's the *learner's* file — first-person, organized by eras — and is automatically maintained alongside the JSON. Full spec in Phase 5 → "Companion learning journal." On first session for an existing learner, if the JSON already has concepts but no journal exists at the resolved path, do a one-time retroactive backfill before the session starts.
+
 ### First-session flow (value first, questions woven in)
 
 **Step 1: Ask one question, then teach something immediately.**
@@ -260,7 +262,12 @@ Weave understanding checks naturally into the dialogue. Don't separate "teaching
 
 ## Phase 5: Progress Update
 
-Update the progress file at the path that was resolved in Phase 1 (typically `~/.claude/learning-progress.json` after the auto-migration; honors `$LEARN_PROGRESS_PATH` if set). Create the file if it doesn't exist.
+Two companion files are updated after every session. The JSON path is the one resolved in Phase 1; the journal lives in the same directory as the JSON. So with the default path, the JSON is `~/.claude/learning-progress.json` and the journal is `~/.claude/learning-journal.md`. With `$LEARN_PROGRESS_PATH` set, the JSON path honors that and the journal sits next to it.
+
+- **`learning-progress.json`** — the skill's internal tracker (schema below)
+- **`learning-journal.md`** — a human-readable journal in the learner's voice (spec further below)
+
+The JSON tells the skill what to teach next. The journal tells the learner where they came from. Create either file if it doesn't exist.
 
 ### Schema (v2)
 
@@ -333,14 +340,82 @@ Default ease_factor for new concepts: 2.5. The formula adjusts it based on how e
 
 If you read a v1 progress file (no `schema_version`), migrate in place: add `schema_version: 2`, default spaced repetition fields, default `blooms_level: "understand"`, add empty `session_continuity`. Preserve all existing data.
 
+### Companion learning journal
+
+Every session also appends to a human-readable journal that lives next to the progress file: **`<dirname(progress_path)>/learning-journal.md`**. With the default path, that's `~/.claude/learning-journal.md`.
+
+The two files run in parallel:
+- The **JSON** is the skill's brain — confidence scores, Bloom's, spaced repetition, ease factors, open threads. Useful to the tutor, basically illegible for skimming.
+- The **journal** is the *learner's* — written in first person, organized into thematic eras, designed to be skimmed by the learner months later (or shared with their team).
+
+The JSON tells the skill what to teach next. The journal tells the learner where they came from.
+
+**Structure** (modeled on the kind of narrative-changelog or "lore" doc projects keep — entries are dated, voiced, and connected):
+
+```markdown
+# Learning Journal — [Learner's Name]
+
+Status: Active reference
+Started: [first-session date]
+Maintained: after every /learn session
+Companion to: `learning-progress.json` (the skill's internal tracker — useful to the tutor, illegible for skimming. **This file is for the learner.**)
+
+---
+
+[1-2 paragraphs in the learner's voice explaining what this is and how to read it.]
+
+---
+
+## Era 1 — [Theme] ([date range])
+
+*[1-2 italic lines: what this era was about]*
+
+### YYYY-MM-DD — [Short evocative title]
+
+**What I learned.** [Plain language, first person, the core insight]
+
+**Why it landed.** [The trigger — real bug, code review, incident, conversation]
+
+**Where it lives in my code.** [file:line, if applicable]
+
+**What it unlocked.** [What this lesson made possible going forward]
+
+(optional) **What's still open.** [The part that didn't fully close yet]
+
+(optional) **Connections.** [When a new lesson weaves together earlier ones]
+```
+
+**Voice rules:**
+- First person, in the learner's words ("What I learned" — never "What you learned")
+- Plain language; never lead with jargon
+- Specific to the learner's actual code (file:line references where applicable)
+- Concrete moments, not abstract summaries
+- Quote the learner's own phrasing where they captured something well; paraphrase elsewhere
+
+**When to start a new era:**
+A new era begins when the **kind** of thing the learner is learning shifts — for example, from syntax to patterns, or from patterns to debugging, or from debugging to architecture. Roughly aligned with the project's own phases. Don't over-engineer this; default to one era per ~5–10 sessions if no clear theme break exists.
+
+**First-time backfill (introducing this for an existing learner):**
+If the progress file already has a populated `concepts` array but no journal yet exists at the resolved path, **backfill the journal retroactively from the JSON** as a one-time setup. Group concepts into eras by date and theme (look at session dates, related concepts, project phases referenced in the `notes` field). Each backfilled entry gets the full structure, written in first person from the `notes` field plus inferred context. Acknowledge to the learner what you did and offer to refine voice if any entry feels off.
+
+**Per-session updates** (every session after backfill):
+1. Determine the current era. If today's session reflects a theme shift from prior sessions, start a new era; otherwise append to the current one.
+2. Append a new entry under the current era using the structure above.
+3. Voice the entry from the learner's articulations during the session — quote their phrasings where they captured something well, paraphrase where you summarize.
+4. Connect back to earlier entries when today's lesson built on prior ones (the "Connections" optional field).
+
+**Why this exists:**
+The progress JSON is necessary but not sufficient. It tells the skill what to do next, but it doesn't help the *learner* feel growth. A human-readable journal makes the arc legible to the person living it — and shareable with anyone they want.
+
 ### End-of-Session Actions
 
 1. Update concept confidence and Bloom's level
 2. Calculate next review date per spaced repetition
 3. Log session with mode, concepts explored, open threads
-4. Deliver session recap — **make it feel like closing a good book, not a report card:**
+4. Append entry to `learning-journal.md` under the current era (or do the one-time retroactive backfill if introducing this file for the first time)
+5. Deliver session recap — **make it feel like closing a good book, not a report card:**
 
-The recap has three parts. Keep it short — no scores, no taxonomy labels, no metadata.
+The recap has three core parts (1, 2, 3 below) plus an optional Part 4 ("Share it") offered only when a session had a genuine insight worth sharing. Keep it short — no scores, no taxonomy labels, no metadata.
 
 **Part 1: What you now know** (stated as a capability, not a grade)
 > "You now know why your API route needs `await` — and you figured it out yourself."
