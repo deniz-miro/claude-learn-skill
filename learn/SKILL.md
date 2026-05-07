@@ -32,7 +32,7 @@ Read whichever path resolves. If it has a `learner` profile, use it. If not, do 
 
 **Why user-level instead of per-repo:** the progress file tracks the *learner* (you), not the *project*. Concepts like async/await don't reset because you switched repos. The original spec used `<repo>/docs/learning-progress.json`, which meant migrating to a new repo (or working across multiple in parallel) silently lost all progress on a fresh checkout. The default moved to user-level in 2026-05; the migration path above is in place so existing users don't lose data.
 
-**Companion journal file.** A human-readable companion file `learning-journal.md` lives next to the progress file (so at `~/.claude/learning-journal.md` with the default path, or `dirname($LEARN_PROGRESS_PATH)/learning-journal.md` if the env var is set). It's the *learner's* file — first-person, organized by eras — and is automatically maintained alongside the JSON. Full spec in Phase 5 → "Companion learning journal." On first session for an existing learner, if the JSON already has concepts but no journal exists at the resolved path, do a one-time retroactive backfill before the session starts.
+**Companion journal file.** A human-readable companion file `learning-journal.md` lives in the same directory as the progress file — so `~/.claude/learning-journal.md` with the default path, or in the directory containing `$LEARN_PROGRESS_PATH` if the env var is set. It's the *learner's* file — first-person, organized by eras — and is automatically maintained alongside the JSON. Full spec in Phase 5 → "Companion learning journal." On first session for an existing learner, if the JSON already has concepts but no journal exists at the resolved path, do a one-time retroactive backfill before the session starts.
 
 ### First-session flow (value first, questions woven in)
 
@@ -262,12 +262,12 @@ Weave understanding checks naturally into the dialogue. Don't separate "teaching
 
 ## Phase 5: Progress Update
 
-Two companion files are updated after every session, both living at the path resolved in Phase 1 (typically `~/.claude/` after the auto-migration; honors `$LEARN_PROGRESS_PATH` if set):
+Two companion files are updated after every session. The JSON path is the one resolved in Phase 1; the journal lives in the same directory as the JSON. So with the default path, the JSON is `~/.claude/learning-progress.json` and the journal is `~/.claude/learning-journal.md`. With `$LEARN_PROGRESS_PATH` set, the JSON path honors that and the journal sits next to it.
 
 - **`learning-progress.json`** — the skill's internal tracker (schema below)
 - **`learning-journal.md`** — a human-readable journal in the learner's voice (spec further below)
 
-The JSON tells the skill what to teach next. The journal tells the learner where they came from. Both files live in the same directory; create either if it doesn't exist.
+The JSON tells the skill what to teach next. The journal tells the learner where they came from. Create either file if it doesn't exist.
 
 ### Schema (v2)
 
@@ -415,7 +415,7 @@ The progress JSON is necessary but not sufficient. It tells the skill what to do
 4. Append entry to `learning-journal.md` under the current era (or do the one-time retroactive backfill if introducing this file for the first time)
 5. Deliver session recap — **make it feel like closing a good book, not a report card:**
 
-The recap has three parts. Keep it short — no scores, no taxonomy labels, no metadata.
+The recap has three core parts (1, 2, 3 below) plus an optional Part 4 ("Share it") offered only when a session had a genuine insight worth sharing. Keep it short — no scores, no taxonomy labels, no metadata.
 
 **Part 1: What you now know** (stated as a capability, not a grade)
 > "You now know why your API route needs `await` — and you figured it out yourself."
