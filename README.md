@@ -18,7 +18,7 @@ This skill fixes that. It teaches you the foundations by asking questions about 
 - **Adapts to you**: Learns your background (design, PM, data, research) and tailors analogies to your world
 - **Frustration-aware**: Detects when you're stuck and changes approach instead of pushing harder
 - **Teach mode**: When you're confident, flip the roles — you teach, the skill plays dumb and asks naive questions
-- **Progress tracking**: Spaced repetition, session continuity, shareable learning artifacts
+- **Progress tracking — two files**: a JSON brain for the skill (confidence, spaced repetition, open threads) AND a markdown journal in your voice (first-person, organized by thematic eras). The JSON tells the skill what to teach next; the journal tells you where you came from.
 - **Delight**: Celebrates real growth moments, remembers your journey across sessions
 
 ## Install
@@ -108,10 +108,11 @@ The skill detects frustration — repeated "I don't know," short answers, or you
 At higher confidence levels, the skill offers **teach mode**: you explain the concept, the skill plays a curious beginner and asks naive questions. If you can teach it, you own it.
 
 ### Session endings
-Every session ends with three things:
+Every session ends with these things:
 1. **What you now know** — stated as a capability, not a grade
 2. **One thing to try** — a concrete action for your next session
-3. **Share it** (optional) — save to a learning log or draft a Slack TIL post
+3. **Auto-saved to your journal** — `learning-journal.md` (next to `learning-progress.json`) gets a new entry under the current era, written in your voice. Skim it any time to see your arc.
+4. **Share it** (optional) — draft a Slack TIL post you can send to your team
 
 No scores. No taxonomy labels. You should feel accomplished, not measured.
 
