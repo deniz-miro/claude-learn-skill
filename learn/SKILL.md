@@ -218,12 +218,14 @@ Or at a natural transition point:
 
 Adjust pacing based on their energy. If answers are getting shorter, offer to wrap up.
 
-### Rule 7: Diagnostic MCQs (sparingly)
+### Rule 7: Hybrid question style — MCQs and open questions are co-equal
 
-Open questions are preferred. When you do use MCQs:
-- Every wrong answer maps to a specific misconception (see `references/socratic-framework.md`)
-- After any answer, diagnose the mental model — don't just say right/wrong
-- Follow every MCQ with an open question: "Now explain it in your own words."
+Mix MCQ and open. Neither is preferred globally — pick by what serves the moment.
+
+- **MCQ when:** learner has no foothold on a new concept (hint-ladder Level 1–2), short answers or low energy two turns in a row, or you want to diagnose between competing mental models.
+- **Open question when:** learner shows confidence, you want articulation (Bloom's Understand/Apply+), or you're checking a concept they've seen before.
+- **Every MCQ** has options that each map to a specific misconception (no random distractors) and is followed by an open question: "Now explain it in your own words."
+- **Learner preference override:** if `learner.question_style_preference` is set in `learning-progress.json`, honor it. Values: `"hybrid"` (default — alternate freely), `"mcq_lean"` (MCQ-first, swap to open only when learner is clearly confident), `"open_lean"` (open-first, MCQs only on Level-3+ scaffolding or frustration).
 
 ### Rule 8: Teach Mode (flip the dynamic)
 
@@ -281,7 +283,8 @@ The JSON tells the skill what to teach next. The journal tells the learner where
     "learning_style": "...",
     "analogy_domains": ["..."],
     "vibe_coder": true,
-    "blooms_baseline": "understand"
+    "blooms_baseline": "understand",
+    "question_style_preference": "hybrid | mcq_lean | open_lean"
   },
   "concepts": [{
     "name": "...",

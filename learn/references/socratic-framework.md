@@ -191,7 +191,7 @@ Always teach at their current level and offer a question at one level up. Don't 
 
 ## Diagnostic MCQ Design Rules
 
-Use MCQs sparingly — open questions are preferred. When you do use them:
+Use MCQs and open questions as co-equal tools — neither is preferred globally. MCQs scaffold flow and check recognition; open questions test articulation. Default to alternating unless the learner's `question_style_preference` is set in `learning-progress.json`. When you do use MCQs:
 
 ### Rule 1: Every wrong answer maps to a specific misconception
 
